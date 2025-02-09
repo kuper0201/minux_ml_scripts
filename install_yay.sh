@@ -19,7 +19,7 @@ su - "$USERNAME" -c "
     makepkg -si --noconfirm &&
     cd .. &&
     rm -rf yay &&
-    yay -Syu --noconfirm downgrade miniconda3
+    yay -Syu --noconfirm downgrade miniconda3 realvnc-vnc-server
 "
 
 # 임시 사용자 제거
