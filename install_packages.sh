@@ -4,3 +4,5 @@ pacman -Syu --noconfirm linux-lts-headers lightdm lightdm-gtk-greeter enlightenm
 
 # check install_yay.sh
 systemctl enable NetworkManager
+systemctl enable lightdm
+systemctl enable docker
