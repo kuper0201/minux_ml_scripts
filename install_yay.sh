@@ -19,7 +19,7 @@ su - "$USERNAME" -c "
     makepkg -si --noconfirm &&
     cd .. &&
     rm -rf yay &&
-    yay -Syu --noconfirm downgrade miniconda3 realvnc-vnc-server
+    yay -Syu --noconfirm downgrade miniconda3 ttf-nanum realvnc-vnc-server
 "
 
 systemctl enable vncserver-x11-serviced
