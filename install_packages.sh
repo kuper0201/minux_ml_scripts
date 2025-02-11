@@ -2,7 +2,7 @@
 
 pacman -Syu --needed --noconfirm linux-lts-headers lightdm lightdm-gtk-greeter nvidia-dkms docker networkmanager git base-devel nano
 pacman -Syu --needed --noconfirm xterm network-manager-applet openbox obconf lxqt-panel papirus-icon-theme pcmanfm-gtk3 lxappearance alacritty kvantum kvantum-theme-materia materia-gtk-theme kvantum-qt5 qt5ct qt6ct
-pacman -Syu --needed --noconfirm fcitx5 fcitx5-im fcitx5-hangul fcitx5-configtool fcitx5-qt fcitx5-gtk python-cryptography
+pacman -Syu --needed --noconfirm fcitx5 fcitx5-im fcitx5-hangul fcitx5-configtool fcitx5-qt fcitx5-gtk python-cryptography nvidia-container-toolkit
 
 # check install_yay.sh
 systemctl enable NetworkManager
