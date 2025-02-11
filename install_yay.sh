@@ -22,6 +22,8 @@ su - "$USERNAME" -c "
     yay -Syu --noconfirm downgrade miniconda3 realvnc-vnc-server
 "
 
+systemctl enable vncserver-x11-serviced
+
 # 임시 사용자 제거
 userdel -r "$USERNAME"
 
