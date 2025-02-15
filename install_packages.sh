@@ -17,3 +17,5 @@ chmod -R 777 /opt/micromamba
 systemctl enable NetworkManager
 systemctl enable lightdm
 systemctl enable docker
+
+pacman -Scc --noconfirm
