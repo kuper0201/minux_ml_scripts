@@ -17,6 +17,7 @@ su - "$USERNAME" -c "
     cd .. &&
     rm -rf yay &&
     yay -Syu --noconfirm downgrade ttf-nanum realvnc-vnc-server
+    yay -Scc --noconfirm
 "
 
 systemctl enable vncserver-x11-serviced
