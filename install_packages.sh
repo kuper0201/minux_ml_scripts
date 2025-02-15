@@ -19,3 +19,4 @@ systemctl enable lightdm
 systemctl enable docker
 
 pacman -Scc --noconfirm
+rm -rf ~/.cache
