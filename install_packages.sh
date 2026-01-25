@@ -3,7 +3,7 @@
 pacman -Syu --needed --noconfirm linux-lts-headers lightdm lightdm-gtk-greeter docker networkmanager git base-devel intel-ucode amd-ucode nano
 pacman -Syu --needed --noconfirm xterm network-manager-applet openbox lxqt-panel papirus-icon-theme pcmanfm-gtk3 lxappearance lxappearance-obconf alacritty kvantum kvantum-theme-materia materia-gtk-theme kvantum-qt5 qt5ct qt6ct
 pacman -Syu --needed --noconfirm fcitx5 fcitx5-im fcitx5-hangul fcitx5-configtool fcitx5-qt fcitx5-gtk python-cryptography
-pacman -Syu --needed --noconfirm nvidia-dkms nvidia-container-toolkit
+pacman -Syu --needed --noconfirm nvidia-open-dkms nvidia-container-toolkit
 
 # install micromamba
 curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
