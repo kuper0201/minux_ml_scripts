@@ -1,29 +1,32 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -Eeuo pipefail
 
-# 임시 사용자 계정 정보
-USERNAME="user3h3kd09e"
+build_user="minux-aur-$$"
+build_home=$(mktemp -d /var/tmp/minux-aur.XXXXXX)
+sudoers_file="/etc/sudoers.d/$build_user"
+cleanup() {
+    rm -f "$sudoers_file"
+    if id "$build_user" >/dev/null 2>&1; then
+        userdel -r "$build_user" >/dev/null 2>&1 || true
+    fi
+    rm -rf "$build_home"
+}
+trap cleanup EXIT
+useradd --system --home-dir "$build_home" --shell /bin/bash "$build_user"
+chown "$build_user:$(id -gn "$build_user")" "$build_home"
+install -d -m 750 /etc/sudoers.d
+printf '%s ALL=(root) NOPASSWD: /usr/bin/pacman\n' "$build_user" > "$sudoers_file"
+chmod 440 "$sudoers_file"
+visudo -cf "$sudoers_file"
 
-useradd -m -G wheel -s /bin/bash "$USERNAME"
-echo "$USERNAME:password" | chpasswd
-
-# sudo 권한 부여
-echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-
-# 임시 사용자로 전환하여 yay 설치
-su - "$USERNAME" -c "
-    git clone https://aur.archlinux.org/yay.git &&
-    cd yay &&
-    makepkg -si --noconfirm &&
-    cd .. &&
-    rm -rf yay &&
-    yay -Syu --noconfirm downgrade ttf-nanum realvnc-vnc-server &&
-    yay -Scc --noconfirm
-"
-
+# yay-bin uses the upstream release binary and avoids compiling Go in the installer.
+# HOME must expand in the builder shell, not the root shell.
+# shellcheck disable=SC2016
+su - "$build_user" -c '
+    set -Eeuo pipefail
+    git clone --depth 1 https://aur.archlinux.org/yay-bin.git "$HOME/yay-bin"
+    cd "$HOME/yay-bin"
+    makepkg -si --noconfirm
+    yay -S --needed --noconfirm downgrade ttf-nanum realvnc-vnc-server
+'
 systemctl enable vncserver-x11-serviced
-
-# 임시 사용자 제거
-userdel -r "$USERNAME"
-
-# sudoers 파일 복원
-sed -i '/%wheel ALL=(ALL) NOPASSWD: ALL/d' /etc/sudoers
