@@ -2,6 +2,7 @@
 set -Eeuo pipefail
 
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+"$script_dir/install_gtk2.sh"
 build_user="minux-aur-$$"
 build_home=$(mktemp -d /var/tmp/minux-aur.XXXXXX)
 sudoers_file="/etc/sudoers.d/$build_user"

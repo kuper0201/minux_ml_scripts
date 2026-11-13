@@ -4,22 +4,23 @@
 # https://help.realvnc.com/hc/en-us/articles/5835892358941
 pkgname=realvnc-vnc-server
 pkgver=7.18.1
-pkgrel=1
+pkgrel=2
 pkgdesc='VNC remote desktop server software by RealVNC'
 arch=('x86_64')
 url='https://www.realvnc.com/'
 license=('custom')
-depends=('libsm' 'libxtst' 'xorg-xauth')
+depends=('libsm' 'libxtst' 'xorg-xauth' 'gtk2>=2.24.33-5')
 optdepends=('cups: Printer support')
 conflicts=('tightvnc' 'tigervnc' 'turbovnc')
 install='realvnc-vnc-server.install'
 # Keep the vendor's prebuilt binaries intact, without empty debug packages.
 options=('!strip' '!debug')
-source=("https://downloads.realvnc.com/download/file/vnc.files/VNC-Server-${pkgver}-Linux-x64.deb")
-sha256sums=('5480e212e288b478aa19c2a54c98e7c158d472f54c2211800457938a091cdc23')
+source=("https://downloads.realvnc.com/download/file/vnc.files/VNC-Server-${pkgver}-Linux-x64.deb" "minux.conf")
+sha256sums=('5480e212e288b478aa19c2a54c98e7c158d472f54c2211800457938a091cdc23' 'db448ea9ca844c8edb10b148595205ef6292228888538c3b34bcd43ac72c1826')
 
 package() {
     bsdtar --extract --file="${srcdir}/data.tar.xz" --directory="${pkgdir}"
+    install -Dm644 "$srcdir/minux.conf" "$pkgdir/usr/lib/systemd/system/vncserver-x11-serviced.service.d/minux.conf"
     install -d "${pkgdir}/usr/share/licenses/${pkgname}"
     ln -s "/usr/share/doc/${pkgname}/copyright" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
