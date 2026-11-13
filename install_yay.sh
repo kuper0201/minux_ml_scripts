@@ -34,4 +34,6 @@ su - "$build_user" -c '
     cd "$HOME/realvnc-vnc-server"
     makepkg -si --noconfirm
 '
-systemctl enable vncserver-x11-serviced
+# An unlicensed server opens its status window over the login greeter.
+# Enable explicitly after configuring a RealVNC subscription.
+echo "RealVNC installed. Configure licensing, then run: systemctl enable --now vncserver-x11-serviced"
