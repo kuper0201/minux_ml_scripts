@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 build_user="minux-aur-$$"
 build_home=$(mktemp -d /var/tmp/minux-aur.XXXXXX)
 sudoers_file="/etc/sudoers.d/$build_user"
@@ -13,7 +14,8 @@ cleanup() {
 }
 trap cleanup EXIT
 useradd --system --home-dir "$build_home" --shell /bin/bash "$build_user"
-chown "$build_user:$(id -gn "$build_user")" "$build_home"
+cp -a "$script_dir/packages/realvnc-vnc-server" "$build_home/"
+chown -R "$build_user:$(id -gn "$build_user")" "$build_home"
 install -d -m 750 /etc/sudoers.d
 printf '%s ALL=(root) NOPASSWD: /usr/bin/pacman\n' "$build_user" > "$sudoers_file"
 chmod 440 "$sudoers_file"
@@ -27,6 +29,8 @@ su - "$build_user" -c '
     git clone --depth 1 https://aur.archlinux.org/yay-bin.git "$HOME/yay-bin"
     cd "$HOME/yay-bin"
     makepkg -si --noconfirm
-    yay -S --needed --noconfirm downgrade ttf-nanum realvnc-vnc-server
+    yay -S --needed --noconfirm downgrade ttf-nanum
+    cd "$HOME/realvnc-vnc-server"
+    makepkg -si --noconfirm
 '
 systemctl enable vncserver-x11-serviced
